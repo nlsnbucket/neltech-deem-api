@@ -10,6 +10,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id String @unique @db.Uuid()
+model Customer {
+  id            Int             @id @default(autoincrement())
+  phoneNumber   String          @map("phone_number")
+  email         String?
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamp
+  updatedAt     DateTime        @default(now()) @map("updated_at") @db.Timestamp
+  deletedAt     DateTime?       @map("deleted_at") @db.Timestamp
+  CustomerOrder CustomerOrder[]
+}
+
+model CustomerOrder {
+  id         Int      @id @default(autoincrement())
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId Int      @map("customer_id")
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    Int      @map("order_id")
+}
+
+model Order {
+  id            Int             @id @default(autoincrement())
+  reason        String
+  description   String
+  offer         Int
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamp
+  updatedAt     DateTime        @default(now()) @map("updated_at") @db.Timestamp
+  deletedAt     DateTime?       @map("deleted_at") @db.Timestamp
+  CustomerOrder CustomerOrder[]
 }
