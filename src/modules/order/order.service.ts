@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { OrderRepository } from './order.repository';
-import { CreateOrderDto, PaginationOptionsDto } from 'src/domain/dtos';
+import { CreateOrderDto, PaginationOptionsDto } from 'domain/dtos';
 import { CustomerService } from '../customer/customer.service';
 import { CustomerOrderService } from '../customer-order/customer-order.service';
 

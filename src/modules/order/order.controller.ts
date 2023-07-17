@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateOrderDto } from 'src/domain/dtos/order';
-import { PaginationOptionsDto } from 'src/domain/dtos';
+import { CreateOrderDto, PaginationOptionsDto } from '../../domain/dtos';
 
 @Controller('order')
 export class OrderController {

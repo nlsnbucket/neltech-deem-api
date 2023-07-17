@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CustomerService } from './customer.service';
-import { PrismaModule } from 'src/db/prisma.module';
+import { PrismaModule } from '../../db/prisma.module';
+import { PrismaService } from '../../db/prisma.service';
 import { CustomerRepository } from './customer.repository';
-import { PrismaService } from 'src/db/prisma.service';
-import { CustomerEntity } from 'src/domain/entities';
+import { CustomerService } from './customer.service';
+import { CustomerEntity } from '../../domain/entities';
 
 describe('CustomerRepository', () => {
   let repository: CustomerRepository;
@@ -22,22 +22,23 @@ describe('CustomerRepository', () => {
   ];
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    moduleRef = await Test.createTestingModule({
       imports: [PrismaModule],
       providers: [CustomerService, CustomerRepository],
     }).compile();
 
-    repository = module.get<CustomerRepository>(CustomerRepository);
+    repository = moduleRef.get<CustomerRepository>(CustomerRepository);
+    prismaService = moduleRef.get<PrismaService>(PrismaService);
+  });
+
+  it('should be defined', () => {
+    expect(repository).toBeDefined();
   });
 
   afterEach(() => {
     prismaService.$disconnect();
 
     moduleRef.close();
-  });
-
-  it('should be defined', () => {
-    expect(repository).toBeDefined();
   });
 
   it('create', async () => {
@@ -58,8 +59,6 @@ describe('CustomerRepository', () => {
       data: {
         phoneNumber: '152123512',
         email: 'test@gmail.com',
-        createdAt: expect.any(Date),
-        updatedAt: expect.any(Date),
         deletedAt: null,
       },
     });

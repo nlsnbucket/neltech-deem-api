@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CustomerOrderEntity } from 'src/domain/entities';
+import { CustomerOrderEntity } from 'domain/entities';
 import { CustomerOrderRepository } from './customer-order.repository';
 
 @Injectable()
