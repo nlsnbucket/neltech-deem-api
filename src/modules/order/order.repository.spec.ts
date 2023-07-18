@@ -25,6 +25,33 @@ describe('OrderRepository', () => {
     },
   ];
 
+  const manyOrder = [
+    {
+      id: 1,
+      reason: 'Creation of site',
+      description: 'n/a',
+      offer: 5012,
+      createdAt: expect.any(Date),
+      updatedAt: expect.any(Date),
+      deletedAt: null,
+      CustomerOrder: [
+        {
+          id: 1,
+          customerId: 1,
+          orderId: 1,
+          customer: {
+            id: 1,
+            phoneNumber: '119305767321',
+            email: null,
+            createdAt: expect.any(Date),
+            updatedAt: expect.any(Date),
+            deletedAt: null,
+          },
+        },
+      ],
+    },
+  ];
+
   beforeEach(async () => {
     moduleRef = await Test.createTestingModule({
       imports: [CustomerModule, CustomerOrderModule, PrismaModule],
@@ -74,5 +101,65 @@ describe('OrderRepository', () => {
     expect(createSpy).toHaveBeenCalledTimes(1);
   });
 
-  // TODO: CRIAR OS TESTES DO FINDBYID E FINDALL
+  it('findAll', async () => {
+    const responseMock: any = manyOrder;
+
+    const findAllSpy = jest
+      .spyOn(prismaService.order, 'findMany')
+      .mockResolvedValue(responseMock);
+
+    const spyFindAll = jest.spyOn(repository, 'findAll');
+    const response = await repository.findAll({
+      page: 1,
+      per_page: 10,
+    });
+
+    expect(response).toStrictEqual(responseMock);
+    expect(findAllSpy).toHaveBeenCalledWith({
+      where: {
+        deletedAt: null,
+      },
+      include: {
+        CustomerOrder: {
+          include: {
+            customer: true,
+          },
+        },
+      },
+      skip: (1 - 1) * 10,
+      take: 10,
+    });
+
+    expect(spyFindAll).toHaveBeenCalledTimes(1);
+    expect(findAllSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('findById', async () => {
+    const responseMock: any = manyOrder;
+
+    const findOneSpy = jest
+      .spyOn(prismaService.order, 'findFirst')
+      .mockResolvedValue(responseMock);
+
+    const spyFindAll = jest.spyOn(repository, 'findById');
+    const response = await repository.findById(1);
+
+    expect(response).toStrictEqual(responseMock);
+    expect(findOneSpy).toHaveBeenCalledWith({
+      where: {
+        id: 1,
+        deletedAt: null,
+      },
+      include: {
+        CustomerOrder: {
+          include: {
+            customer: true,
+          },
+        },
+      },
+    });
+
+    expect(spyFindAll).toHaveBeenCalledTimes(1);
+    expect(findOneSpy).toHaveBeenCalledTimes(1);
+  });
 });

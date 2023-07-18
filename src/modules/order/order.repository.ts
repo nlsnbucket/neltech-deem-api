@@ -35,7 +35,7 @@ export class OrderRepository {
   }
 
   findById(id: number) {
-    return this.prismaService.order.findMany({
+    return this.prismaService.order.findFirst({
       where: {
         id,
         deletedAt: null,
