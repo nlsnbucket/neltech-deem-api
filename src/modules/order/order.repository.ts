@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/db/prisma.service';
-import { CreateOrderDto } from 'src/domain/dtos';
-import { PaginationOptionsDto } from 'src/domain/dtos/pagination';
-import { OrderEntity } from 'src/domain/entities';
+import { PrismaService } from '../../db/prisma.service';
+import { OrderEntity } from '../../domain/entities';
+import { CreateOrderDto, PaginationOptionsDto } from '../../domain/dtos';
 
 @Injectable()
 export class OrderRepository {
@@ -35,7 +34,7 @@ export class OrderRepository {
   }
 
   findById(id: number) {
-    return this.prismaService.order.findMany({
+    return this.prismaService.order.findFirst({
       where: {
         id,
         deletedAt: null,

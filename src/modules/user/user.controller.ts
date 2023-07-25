@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto, SearchUserDto } from 'src/domain/dtos';
+import { CreateUserDto, UpdateUserDto, SearchUserDto } from '../../domain/dtos';
 
 @Controller('user')
 export class UserController {

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/db/prisma.service';
+import { PrismaService } from '../../db/prisma.service';
 import {
   CreateUserDto,
   PaginationOptionsDto,
   SearchUserDto,
   UpdateUserDto,
-} from 'src/domain/dtos';
-import { UserEntity } from 'src/domain/entities';
+} from '../../domain/dtos';
+import { UserEntity } from '../../domain/entities';
 
 @Injectable()
 export class UserRepository {

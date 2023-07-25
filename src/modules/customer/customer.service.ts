@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCustomerDto } from 'src/domain/dtos';
 import { CustomerRepository } from './customer.repository';
+import { CreateCustomerDto } from '../../domain/dtos';
 
 @Injectable()
 export class CustomerService {
