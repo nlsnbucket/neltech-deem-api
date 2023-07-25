@@ -20,6 +20,7 @@ export class UserService {
     if (usernameAlreadyExists)
       throw new HttpException('Username already exists', HttpStatus.CONFLICT);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...user } = await this.userRepository.create(
       createUserDto,
     );
@@ -36,6 +37,7 @@ export class UserService {
 
     if (!user) throw new HttpException('user not found', HttpStatus.NOT_FOUND);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = user;
 
     return hidden ? userWithoutPassword : user;
