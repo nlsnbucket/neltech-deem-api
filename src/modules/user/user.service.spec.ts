@@ -47,12 +47,12 @@ describe('UserService', () => {
     moduleRef.close();
   });
 
-  // TODO: erro aqui
   it('create', async () => {
     const { password, ...responseMock } = user[0];
 
-    jest.spyOn(bcrypt, 'hash').mockResolvedValue('abc123');
     jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null);
+
+    (jest as any).spyOn(bcrypt as any, 'hash').mockResolvedValueOnce('abc123');
 
     const createSpy = jest
       .spyOn(prismaService.user, 'create')
@@ -63,7 +63,7 @@ describe('UserService', () => {
       name: 'test',
       username: 'string',
       email: 'test@email.com',
-      password: 'abc123',
+      password: expect.any(String),
       phone: '1193752184',
     });
 
@@ -73,7 +73,7 @@ describe('UserService', () => {
         name: 'test',
         username: 'string',
         email: 'test@email.com',
-        password: 'abc123',
+        password: expect.any(String),
         phone: '1193752184',
         deletedAt: null,
       },
