@@ -1,19 +1,16 @@
-import { IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { IsNumberString, IsOptional } from 'class-validator';
 
 export class PaginationOptionsDto {
-  @IsNumber()
+  @IsNumberString()
   @IsOptional()
-  @Min(0)
-  page?: number;
+  page?: string;
 
-  @IsNumber()
+  @IsNumberString()
   @IsOptional()
-  @Min(1)
-  @Max(25)
-  per_page?: number;
+  per_page?: string;
 
   constructor() {
-    if (!this.page) this.page = 1;
-    if (!this.per_page) this.per_page = 10;
+    if (!this.page) this.page = '1';
+    if (!this.per_page) this.per_page = '10';
   }
 }
