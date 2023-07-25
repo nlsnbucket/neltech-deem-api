@@ -98,4 +98,70 @@ describe('UserRepository', () => {
     expect(spyFindAll).toHaveBeenCalledTimes(1);
     expect(findOneSpy).toHaveBeenCalledTimes(1);
   });
+
+  it('forceFindByUsername', async () => {
+    const responseMock = user[0];
+
+    const findSpy = jest
+      .spyOn(prismaService.user, 'findFirst')
+      .mockResolvedValue(responseMock);
+
+    const spyFind = jest.spyOn(repository, 'forceFindByUsername');
+    const response = await repository.forceFindByUsername('string');
+
+    expect(response).toStrictEqual(responseMock);
+    expect(findSpy).toHaveBeenCalledWith({
+      where: {
+        username: 'string',
+      },
+    });
+
+    expect(spyFind).toHaveBeenCalledTimes(1);
+    expect(findSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('update', async () => {
+    const responseMock = user[0];
+
+    const findSpy = jest
+      .spyOn(prismaService.user, 'update')
+      .mockResolvedValue(responseMock);
+
+    const spyFind = jest.spyOn(repository, 'update');
+    const response = await repository.update(1, { name: 'test' });
+
+    expect(response).toStrictEqual(responseMock);
+    expect(findSpy).toHaveBeenCalledWith({
+      where: { id: 1 },
+      data: { name: 'test', updatedAt: expect.any(Date) },
+    });
+
+    expect(spyFind).toHaveBeenCalledTimes(1);
+    expect(findSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('softDelete', async () => {
+    const responseMock = user[0];
+
+    const findSpy = jest
+      .spyOn(prismaService.user, 'update')
+      .mockResolvedValue(responseMock);
+
+    const spyFind = jest.spyOn(repository, 'softDelete');
+    const response = await repository.softDelete(1);
+
+    expect(response).toStrictEqual(responseMock);
+    expect(findSpy).toHaveBeenCalledWith({
+      where: {
+        id: 1,
+      },
+      data: {
+        updatedAt: expect.any(Date),
+        deletedAt: expect.any(Date),
+      },
+    });
+
+    expect(spyFind).toHaveBeenCalledTimes(1);
+    expect(findSpy).toHaveBeenCalledTimes(1);
+  });
 });
