@@ -28,8 +28,8 @@ export class OrderRepository {
           },
         },
       },
-      skip: (+page - 1) * +per_page,
-      take: +per_page,
+      skip: (page - 1) * per_page,
+      take: per_page,
     });
   }
 

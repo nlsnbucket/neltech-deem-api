@@ -1,16 +1,19 @@
-import { IsNumberString, IsOptional } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsNumber, IsOptional } from 'class-validator';
 
 export class PaginationOptionsDto {
-  @IsNumberString()
+  @IsNumber()
   @IsOptional()
-  page?: string;
+  @Transform(({ value }) => +value)
+  page?: number;
 
-  @IsNumberString()
+  @IsNumber()
   @IsOptional()
-  per_page?: string;
+  @Transform(({ value }) => +value)
+  per_page?: number;
 
   constructor() {
-    if (!this.page) this.page = '1';
-    if (!this.per_page) this.per_page = '10';
+    if (!this.page) this.page = 1;
+    if (!this.per_page) this.per_page = 10;
   }
 }

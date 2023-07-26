@@ -110,8 +110,8 @@ describe('OrderRepository', () => {
 
     const spyFindAll = jest.spyOn(repository, 'findAll');
     const response = await repository.findAll({
-      page: '1',
-      per_page: '10',
+      page: 1,
+      per_page: 10,
     });
 
     expect(response).toStrictEqual(responseMock);
