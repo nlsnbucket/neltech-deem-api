@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaModule } from '../../db/prisma.module';
-import { PrismaService } from '../../db/prisma.service';
 import { CustomerRepository } from './customer.repository';
 import { CustomerService } from './customer.service';
 import { CustomerEntity } from '../../domain/entities';
+import { PrismaService } from '../../db/prisma.service';
 
 describe('CustomerRepository', () => {
   let repository: CustomerRepository;

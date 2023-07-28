@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CustomerOrderEntity } from 'domain/entities';
 import { CustomerOrderRepository } from './customer-order.repository';
+import { CustomerOrderEntity } from '../../domain/entities';
 
 @Injectable()
 export class CustomerOrderService {

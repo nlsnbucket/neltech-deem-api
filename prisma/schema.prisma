@@ -38,3 +38,15 @@ model Order {
   deletedAt     DateTime?       @map("deleted_at") @db.Timestamp
   CustomerOrder CustomerOrder[]
 }
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  username  String    @unique
+  email     String
+  password  String
+  phone     String?
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp
+  updatedAt DateTime  @default(now()) @map("updated_at") @db.Timestamp
+  deletedAt DateTime? @map("deleted_at") @db.Timestamp
+}

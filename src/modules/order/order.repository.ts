@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderDto } from 'domain/dtos';
-import { PaginationOptionsDto } from 'domain/dtos/pagination';
 import { PrismaService } from '../../db/prisma.service';
-import { OrderEntity } from 'domain/entities';
+import { OrderEntity } from '../../domain/entities';
+import { CreateOrderDto, PaginationOptionsDto } from '../../domain/dtos';
 
 @Injectable()
 export class OrderRepository {
