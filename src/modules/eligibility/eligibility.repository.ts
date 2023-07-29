@@ -21,4 +21,20 @@ export class EligibilityRepository {
       },
     });
   }
+
+  async findByUserIdAndOrderId(
+    userId: number,
+    orderId: number,
+  ): Promise<EligibilityEntity | null> {
+    return this.prismaService.eligibility.findFirst({
+      where: {
+        userId,
+        orderId,
+      },
+      include: {
+        user: true,
+        order: true,
+      },
+    });
+  }
 }
