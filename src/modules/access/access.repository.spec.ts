@@ -95,6 +95,26 @@ describe('AccessRepository', () => {
     expect(createSpy).toHaveBeenCalledTimes(1);
   });
 
+  it('findById', async () => {
+    const createSpy = jest
+      .spyOn(prismaService.access, 'findFirst')
+      .mockResolvedValue(accesses[0]);
+
+    const spyCreate = jest.spyOn(repository, 'findById');
+    const response = await repository.findById(1);
+
+    expect(response).toStrictEqual(accesses[0]);
+    expect(createSpy).toHaveBeenCalledWith({
+      where: {
+        id: 1,
+        disconnectedAt: null,
+      },
+    });
+
+    expect(spyCreate).toHaveBeenCalledTimes(1);
+    expect(createSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('update', async () => {
     const createSpy = jest
       .spyOn(prismaService.access, 'update')

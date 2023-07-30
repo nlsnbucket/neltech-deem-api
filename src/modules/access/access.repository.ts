@@ -36,4 +36,13 @@ export class AccessRepository {
       },
     });
   }
+
+  findById(accessId: number): Promise<AccessEntity> {
+    return this.prismaService.access.findFirst({
+      where: {
+        id: accessId,
+        disconnectedAt: null,
+      },
+    });
+  }
 }

@@ -37,4 +37,13 @@ export class AccessService {
       sub: access.id,
     });
   }
+
+  async findOne(accessId: number) {
+    const access = await this.accessRepository.findById(accessId);
+
+    if (!access)
+      throw new HttpException('Access not found', HttpStatus.NOT_FOUND);
+
+    return access;
+  }
 }

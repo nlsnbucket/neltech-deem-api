@@ -11,7 +11,7 @@ import { AccessEntity, UserEntity } from 'src/domain/entities';
 import bcrypt from 'bcrypt';
 
 // Cheio de b.o nisso
-describe.skip('AccessService', () => {
+describe('AccessService', () => {
   let service: AccessService;
   let prismaService: PrismaService;
   let moduleRef: TestingModule;
@@ -69,37 +69,59 @@ describe.skip('AccessService', () => {
     moduleRef.close();
   });
 
-  it('create', async () => {
-    jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(users[0]);
+  // it('create', async () => {
+  //   jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(users[0]);
 
-    jest.fn().mockResolvedValue(true);
-    bcrypt.compare as jest.Mock;
+  //   jest.fn().mockResolvedValue(true);
+  //   bcrypt.compare as jest.Mock;
 
-    jest.spyOn(prismaService.access, 'findFirst').mockResolvedValue(null);
+  //   jest.spyOn(prismaService.access, 'findFirst').mockResolvedValue(null);
 
-    const createSpy = jest
-      .spyOn(prismaService.access, 'create')
-      .mockResolvedValue(accesses[0]);
+  //   const createSpy = jest
+  //     .spyOn(prismaService.access, 'create')
+  //     .mockResolvedValue(accesses[0]);
 
-    const spyCreate = jest.spyOn(service, 'create');
-    const response = await service.create(
-      {
-        email: 'test@email.com',
-        password: 'abc123',
-      },
-      'Chorme',
-    );
+  //   const spyCreate = jest.spyOn(service, 'create');
+  //   const response = await service.create(
+  //     {
+  //       email: 'test@email.com',
+  //       password: 'abc123',
+  //     },
+  //     'Chorme',
+  //   );
 
-    expect(response).toStrictEqual(expect.any(String));
-    expect(createSpy).toHaveBeenCalledWith({
-      data: {
-        userId: 1,
-        userAgent: 'Chrome',
+  //   expect(response).toStrictEqual(expect.any(String));
+  //   expect(createSpy).toHaveBeenCalledWith({
+  //     data: {
+  //       userId: 1,
+  //       userAgent: 'Chrome',
+  //       disconnectedAt: null,
+  //     },
+  //   });
+
+  //   expect(spyCreate).toHaveBeenCalledTimes(1);
+  //   expect(createSpy).toHaveBeenCalledTimes(1);
+  // });
+
+  it('findById', async () => {
+    const responseMock = accesses[0];
+
+    const findSpy = jest
+      .spyOn(prismaService.access, 'findFirst')
+      .mockResolvedValue(responseMock);
+
+    const spyFind = jest.spyOn(service, 'findOne');
+    const response = await service.findOne(1);
+
+    expect(response).toStrictEqual(responseMock);
+    expect(findSpy).toHaveBeenCalledWith({
+      where: {
+        id: 1,
         disconnectedAt: null,
       },
     });
 
-    expect(spyCreate).toHaveBeenCalledTimes(1);
-    expect(createSpy).toHaveBeenCalledTimes(1);
+    expect(spyFind).toHaveBeenCalledTimes(1);
+    expect(findSpy).toHaveBeenCalledTimes(1);
   });
 });
