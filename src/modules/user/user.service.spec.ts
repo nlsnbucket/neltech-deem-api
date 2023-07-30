@@ -125,12 +125,46 @@ describe('UserService', () => {
     expect(findSpy).toHaveBeenCalledTimes(1);
   });
 
+  it('findByEmail', async () => {
+    const responseMock = user[0];
+
+    const findSpy = jest
+      .spyOn(prismaService.user, 'findFirst')
+      .mockResolvedValue(responseMock);
+
+    const spyFind = jest.spyOn(service, 'findByEmail');
+    const response = await service.findByEmail('test@email.com');
+
+    expect(response).toStrictEqual(responseMock);
+    expect(findSpy).toHaveBeenCalledWith({
+      where: {
+        email: 'test@email.com',
+        deletedAt: null,
+      },
+    });
+
+    expect(spyFind).toHaveBeenCalledTimes(1);
+    expect(findSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('Should throw an error when not found user', async () => {
     jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null);
 
     const spyFind = jest.spyOn(service, 'findOne');
 
     await expect(service.findOne(1)).rejects.toThrow(HttpException);
+
+    expect(spyFind).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should throw an error when not found user by email', async () => {
+    jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null);
+
+    const spyFind = jest.spyOn(service, 'findByEmail');
+
+    await expect(service.findByEmail('abc123@gmail.com')).rejects.toThrow(
+      HttpException,
+    );
 
     expect(spyFind).toHaveBeenCalledTimes(1);
   });

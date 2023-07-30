@@ -32,6 +32,14 @@ export class UserService {
     return this.userRepository.findAll({ per_page, page }, searchUserDto);
   }
 
+  async findByEmail(email: string) {
+    const user = await this.userRepository.findByEmail(email);
+
+    if (!user) throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+
+    return user;
+  }
+
   async findOne(id: number, hidden = true) {
     const user = await this.userRepository.findById(id);
 

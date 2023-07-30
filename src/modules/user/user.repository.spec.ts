@@ -99,6 +99,28 @@ describe('UserRepository', () => {
     expect(findOneSpy).toHaveBeenCalledTimes(1);
   });
 
+  it('findByEmail', async () => {
+    const responseMock = user[0];
+
+    const findOneSpy = jest
+      .spyOn(prismaService.user, 'findFirst')
+      .mockResolvedValue(responseMock);
+
+    const spyFindAll = jest.spyOn(repository, 'findByEmail');
+    const response = await repository.findByEmail('test@email.com');
+
+    expect(response).toStrictEqual(responseMock);
+    expect(findOneSpy).toHaveBeenCalledWith({
+      where: {
+        email: 'test@email.com',
+        deletedAt: null,
+      },
+    });
+
+    expect(spyFindAll).toHaveBeenCalledTimes(1);
+    expect(findOneSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('forceFindByUsername', async () => {
     const responseMock = user[0];
 
