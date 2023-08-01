@@ -4,10 +4,18 @@ import { AppController } from './app.controller';
 import { OrderModule } from './modules/order/order.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { CustomerOrderModule } from './modules/customer-order/customer-order.module';
-import { OrderNotesModule } from './modules/order-notes/order-notes.module';
+
+import { UserModule } from './modules/user/user.module';
 
 @Module({
-  imports: [PrismaModule, OrderModule, CustomerModule, CustomerOrderModule, OrderNotesModule],
+  imports: [
+    PrismaModule,
+    OrderModule,
+    CustomerModule,
+    CustomerOrderModule,
+    UserModule,
+    OrderNotesModule
+  ],
   controllers: [AppController],
 })
 export class AppModule {}

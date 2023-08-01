@@ -1,15 +1,15 @@
-import { IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsNumber, IsOptional } from 'class-validator';
 
 export class PaginationOptionsDto {
   @IsNumber()
   @IsOptional()
-  @Min(0)
+  @Transform(({ value }) => +value)
   page?: number;
 
   @IsNumber()
   @IsOptional()
-  @Min(1)
-  @Max(25)
+  @Transform(({ value }) => +value)
   per_page?: number;
 
   constructor() {
