@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator"
 
-export class CreateOrderNoteDto {
+export class CreateOrderNotesDto {
     @IsNumber()
     @IsNotEmpty()
     orderId: number

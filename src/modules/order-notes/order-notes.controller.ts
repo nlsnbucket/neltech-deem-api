@@ -1,34 +1,29 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { OrderNotesService } from './order-notes.service';
-import { CreateOrderNoteDto } from '../../domain/dtos/order-notes/create-order-note.dto';
-import { UpdateOrderNoteDto } from '../../domain/dtos/order-notes/update-order-note.dto';
+import { CreateOrderNotesDto } from '../../domain/dtos/order-notes/create-order-notes.dto';
+import { UpdateOrderNotesDto } from '../../domain/dtos/order-notes/update-order-notes.dto';
 
 @Controller('order-notes')
 export class OrderNotesController {
   constructor(private readonly orderNotesService: OrderNotesService) {}
 
   @Post()
-  create(@Body() createOrderNoteDto: CreateOrderNoteDto) {
-    return this.orderNotesService.create(createOrderNoteDto);
+  create(@Body() CreateOrderNotesDto: CreateOrderNotesDto) {
+    return this.orderNotesService.create(CreateOrderNotesDto);
   }
 
-  @Get('all/:orderId')
+  @Get('order-id/:orderId')
   findAllById(@Param('orderId') id: string) {
     return this.orderNotesService.findAllById(+id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderNotesService.findOne(+id);
-  }
-
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderNoteDto: UpdateOrderNoteDto) {
-    return this.orderNotesService.update(+id, updateOrderNoteDto);
+  update(@Param('id') id: string, @Body() UpdateOrderNotesDto: UpdateOrderNotesDto) {
+    return this.orderNotesService.update(+id, UpdateOrderNotesDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderNotesService.remove(+id);
+  softDelete(@Param('id') id: string) {
+    return this.orderNotesService.softDelete(+id);
   }
 }

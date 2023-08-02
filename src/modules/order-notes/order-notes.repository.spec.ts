@@ -4,14 +4,14 @@ import { PrismaService } from '../../db/prisma.service';
 import { OrderNotesRepository } from './order-notes.repository';
 import { OrderNotesService } from './order-notes.service';
 import { OrderNotesController } from './order-notes.controller';
-import { OrderNoteEntity } from '../../domain/entities';
+import { OrderNotesEntity } from '../../domain/entities';
 
 describe('OrderNotesRepository', () => {
   let repository: OrderNotesRepository;
   let prismaService: PrismaService;
   let moduleRef: TestingModule;
 
-  const OrderNote: OrderNoteEntity[] = [
+  const OrderNote: OrderNotesEntity[] = [
     {
       id: 1,
       orderId: 1,
@@ -147,14 +147,12 @@ describe('OrderNotesRepository', () => {
     expect(response).toStrictEqual(responseMock);
     expect(updateSpy).toHaveBeenCalledWith({
       where:{
-        id: 1,
-        deletedAt: null,
+        id: 1
       },
       data: {
         orderId: 1,
         name: "Teste",
-        description: "Testing",
-        deletedAt: null,
+        description: "Testing"
       },
     });
 
@@ -163,16 +161,16 @@ describe('OrderNotesRepository', () => {
 
   })
 
-  it('remove', async () =>{
+  it('softDelete', async () =>{
     const responseMock = OrderNote[1];
 
     const removeSpy = jest
       .spyOn(prismaService.orderNotes, 'update')
       .mockResolvedValue(responseMock);
 
-    const spyRemove = jest.spyOn(repository, 'remove');
+    const spyRemove = jest.spyOn(repository, 'softDelete');
     
-    const response = await repository.remove(1);
+    const response = await repository.softDelete(1);
 
     expect(response).toStrictEqual(responseMock);
     expect(removeSpy).toHaveBeenCalledWith({

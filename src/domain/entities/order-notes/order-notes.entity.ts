@@ -1,6 +1,6 @@
 import { OrderNotes } from "@prisma/client";
 
-export class OrderNoteEntity implements OrderNotes{
+export class OrderNotesEntity implements OrderNotes{
     id: number;
     orderId: number;
     name: string;

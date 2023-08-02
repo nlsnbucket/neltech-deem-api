@@ -1,17 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../db/prisma.service";
-import { CreateOrderNoteDto } from '../../domain/dtos/order-notes/create-order-note.dto';
-import { UpdateOrderNoteDto } from '../../domain/dtos/order-notes/update-order-note.dto';
-import { OrderNoteEntity } from "../../domain/entities/order-notes/order-note.entity";
+import { CreateOrderNotesDto } from '../../domain/dtos/order-notes/create-order-notes.dto';
+import { UpdateOrderNotesDto } from '../../domain/dtos/order-notes/update-order-notes.dto';
+import { OrderNotesEntity } from "../../domain/entities/order-notes/order-notes.entity";
 
 @Injectable()
 export class OrderNotesRepository{
     constructor(private readonly prismaService: PrismaService) {}
 
-    create(createOrderNoteDto: CreateOrderNoteDto): Promise<OrderNoteEntity> {
+    create(CreateOrderNotesDto: CreateOrderNotesDto): Promise<OrderNotesEntity> {
         return this.prismaService.orderNotes.create({
             data: {
-                ...createOrderNoteDto,
+                ...CreateOrderNotesDto,
                 deletedAt: null,
             },
         });
@@ -35,20 +35,18 @@ export class OrderNotesRepository{
         })
     }
 
-    update(id : number, updateOrderNoteDto: UpdateOrderNoteDto): Promise<OrderNoteEntity>{
+    update(id : number, UpdateOrderNotesDto: UpdateOrderNotesDto): Promise<OrderNotesEntity>{
         return this.prismaService.orderNotes.update({
             where: {
                 id,
-                deletedAt: null,
             },
             data: {
-                ...updateOrderNoteDto,
-                deletedAt: null,
+                ...UpdateOrderNotesDto,
             }
         })
     }
 
-    remove(id:number){
+    softDelete(id:number){
         return this.prismaService.orderNotes.update({
             where: {
                 id,

@@ -1,1 +1,1 @@
-export * from './order-note.entity';
+export * from './order-notes.entity';

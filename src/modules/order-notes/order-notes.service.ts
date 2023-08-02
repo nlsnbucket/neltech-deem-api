@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateOrderNoteDto } from '../../domain/dtos/order-notes/create-order-note.dto';
-import { UpdateOrderNoteDto } from '../../domain/dtos/order-notes/update-order-note.dto';
+import { CreateOrderNotesDto } from '../../domain/dtos/order-notes/create-order-notes.dto';
+import { UpdateOrderNotesDto } from '../../domain/dtos/order-notes/update-order-notes.dto';
 import { OrderNotesRepository } from './order-notes.repository';
 
 @Injectable()
@@ -11,8 +11,8 @@ export class OrderNotesService {
   ) {}
 
 
-  async create(createOrderNoteDto: CreateOrderNoteDto) {
-    const orderNote = await this.orderNotesRepository.create(createOrderNoteDto);
+  async create(CreateOrderNotesDto: CreateOrderNotesDto) {
+    const orderNote = await this.orderNotesRepository.create(CreateOrderNotesDto);
     return orderNote;
   }
 
@@ -22,30 +22,26 @@ export class OrderNotesService {
     return orderNotes;
   }
 
-  async findOne(id: number) {
+  async update(id: number, UpdateOrderNotesDto: UpdateOrderNotesDto) {
     const orderNote = await this.orderNotesRepository.findById(id);
 
     if (!orderNote)
       throw new HttpException('order note not found', HttpStatus.NOT_FOUND);
 
-    return orderNote;
+    const orderNoteUpdate = await this.orderNotesRepository.update(id,UpdateOrderNotesDto);
+
+    return orderNoteUpdate;
   }
 
-  async update(id: number, updateOrderNoteDto: UpdateOrderNoteDto) {
-    const orderNote = await this.orderNotesRepository.update(id,updateOrderNoteDto);
+
+  async softDelete(id: number) {
+    const orderNote = await this.orderNotesRepository.findById(id);
 
     if (!orderNote)
       throw new HttpException('order note not found', HttpStatus.NOT_FOUND);
 
-    return orderNote;
-  }
+    const orderNoteSoftDelete = await this.orderNotesRepository.softDelete(id);
 
-  async remove(id: number) {
-    const orderNote = await this.orderNotesRepository.remove(id);
-
-    if (!orderNote)
-      throw new HttpException('order note not found', HttpStatus.NOT_FOUND);
-
-    return orderNote;
+    return orderNoteSoftDelete;
   }
 }
