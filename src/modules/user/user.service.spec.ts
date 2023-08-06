@@ -4,7 +4,6 @@ import { UserRepository } from './user.repository';
 import { PrismaService } from '../../db/prisma.service';
 import { PrismaModule } from '../../db/prisma.module';
 import { UserEntity } from 'src/domain/entities';
-import * as bcrypt from 'bcrypt';
 import { HttpException } from '@nestjs/common';
 
 describe('UserService', () => {
@@ -16,9 +15,9 @@ describe('UserService', () => {
     {
       id: 1,
       name: 'test',
+      avatarUrl: 'https://www.github.com/jotaviobueno.png',
       username: 'string',
       email: 'test@email.com',
-      password: 'abc123',
       phone: '1193752184',
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
@@ -47,68 +46,12 @@ describe('UserService', () => {
     moduleRef.close();
   });
 
-  it('create', async () => {
-    const { password, ...responseMock } = user[0];
-
-    jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(null);
-
-    (jest as any).spyOn(bcrypt as any, 'hash').mockResolvedValueOnce('abc123');
-
-    const createSpy = jest
-      .spyOn(prismaService.user, 'create')
-      .mockResolvedValue({ ...responseMock, password });
-
-    const spyCreate = jest.spyOn(service, 'create');
-    const response = await service.create({
-      name: 'test',
-      username: 'string',
-      email: 'test@email.com',
-      password: expect.any(String),
-      phone: '1193752184',
-    });
-
-    expect(response).toStrictEqual(responseMock);
-    expect(createSpy).toHaveBeenCalledWith({
-      data: {
-        name: 'test',
-        username: 'string',
-        email: 'test@email.com',
-        password: expect.any(String),
-        phone: '1193752184',
-        deletedAt: null,
-      },
-    });
-
-    expect(spyCreate).toHaveBeenCalledTimes(1);
-    expect(createSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it('Should throw an error when validation at the time of creation finds a user with the same name', async () => {
-    const responseMock = user[0];
-
-    jest.spyOn(prismaService.user, 'findFirst').mockResolvedValue(responseMock);
-
-    const spyFind = jest.spyOn(service, 'create');
-
-    await expect(
-      service.create({
-        name: 'test',
-        username: 'string',
-        email: 'test@email.com',
-        password: 'abc123',
-        phone: '1193752184',
-      }),
-    ).rejects.toThrow(HttpException);
-
-    expect(spyFind).toHaveBeenCalledTimes(1);
-  });
-
   it('findOne', async () => {
-    const { password, ...responseMock } = user[0];
+    const responseMock = user[0];
 
     const findSpy = jest
       .spyOn(prismaService.user, 'findFirst')
-      .mockResolvedValue({ ...responseMock, password });
+      .mockResolvedValue(responseMock);
 
     const spyFind = jest.spyOn(service, 'findOne');
     const response = await service.findOne(1);

@@ -38,6 +38,15 @@ export class UserRepository {
     });
   }
 
+  findByEmail(email: string): Promise<UserEntity> {
+    return this.prismaService.user.findFirst({
+      where: {
+        email,
+        deletedAt: null,
+      },
+    });
+  }
+
   findAll(
     { page, per_page }: PaginationOptionsDto,
     searchUserDto: SearchUserDto,
@@ -101,15 +110,6 @@ export class UserRepository {
           : {
               deletedAt: null,
             },
-      select: {
-        id: true,
-        name: true,
-        username: true,
-        email: true,
-        phone: true,
-        createdAt: true,
-        updatedAt: true,
-      },
       skip: (page - 1) * per_page,
       take: per_page,
     });

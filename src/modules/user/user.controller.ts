@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -9,21 +8,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto, SearchUserDto } from '../../domain/dtos';
+import { UpdateUserDto, SearchUserDto } from '../../domain/dtos';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
-
   @Get()
   findAll(@Query() searchUserDto: SearchUserDto) {
-    console.log(searchUserDto);
-
     return this.userService.findAll(searchUserDto);
   }
 

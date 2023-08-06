@@ -55,11 +55,21 @@ model OrderNotes {
 model User {
   id        Int       @id @default(autoincrement())
   name      String
-  username  String    @unique
-  email     String
-  password  String
+  username  String
+  avatarUrl String?
+  email     String?
   phone     String?
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamp
   updatedAt DateTime  @default(now()) @map("updated_at") @db.Timestamp
   deletedAt DateTime? @map("deleted_at") @db.Timestamp
+  access    Access    @relation(fields: [accessId], references: [id])
+  accessId  Int       @map("user_id")
+}
+
+model Access {
+  id          Int      @id @default(autoincrement())
+  token       String
+  socialLogin String   @map("social_login")
+  lastAccess  DateTime @default(now()) @map("last_access") @db.Timestamp
+  User        User[]
 }
