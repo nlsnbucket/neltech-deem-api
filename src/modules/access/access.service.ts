@@ -53,7 +53,7 @@ export class AccessService {
   private async findLogin(token: string) {
     const access = await this.accessRepository.findByToken(token);
 
-    if (access) await this.accessRepository.updateAccess(access.id);
+    if (access) await this.accessRepository.updateLastAccess(access.id);
 
     return access;
   }
