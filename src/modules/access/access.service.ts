@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateAccessDto } from '../../domain/dtos';
 import { UserService } from '../user/user.service';
 import { AccessRepository } from './access.repository';
-import bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { ACCESS_PROVIDER } from 'src/domain/enums';
+import { githubAuth, githubGetUser } from 'src/utils/github';
 
 @Injectable()
 export class AccessService {
@@ -13,36 +14,46 @@ export class AccessService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async create(createAccessDto: CreateAccessDto, userAgent: string) {
-    const user = await this.userService.findByEmail(createAccessDto.email);
+  makeSocialLogin(createAccessDto: CreateAccessDto): Promise<string> {
+    switch (createAccessDto.provider) {
+      case ACCESS_PROVIDER.GITHUB:
+        return this.makeLoginWithGithub(createAccessDto.code);
+    }
+  }
 
-    const passwordIsCorrect = await bcrypt.compare(
-      createAccessDto.password,
-      user.password,
+  private async makeLoginWithGithub(code: string): Promise<string> {
+    const token = await githubAuth(code);
+
+    const user = await githubGetUser(token.access_token);
+
+    return this.createAccess(
+      { ...user, name: user.name, username: user.login, id: user.node_id },
+      ACCESS_PROVIDER.GITHUB,
     );
+  }
 
-    if (!passwordIsCorrect)
-      throw new HttpException('not authorized', HttpStatus.UNAUTHORIZED);
+  private async createAccess(user: any, loginType: ACCESS_PROVIDER) {
+    let access = await this.findLogin(user.id);
 
-    const accessExist = await this.accessRepository.findByUserAgent(
-      user.id,
-      userAgent,
-    );
+    if (!access) {
+      access = await this.accessRepository.create(user.id, loginType);
 
-    const access = !accessExist
-      ? await this.accessRepository.create(user.id, userAgent)
-      : await this.accessRepository.update(accessExist.id);
+      await this.userService.create({
+        ...(user.picture && { avatarUrl: user.picture }),
+        ...user,
+        accessId: access.id,
+      });
+    }
 
     return this.jwtService.sign({
       sub: access.id,
     });
   }
 
-  async findOne(accessId: number) {
-    const access = await this.accessRepository.findById(accessId);
+  private async findLogin(token: string) {
+    const access = await this.accessRepository.findByToken(token);
 
-    if (!access)
-      throw new HttpException('Access not found', HttpStatus.NOT_FOUND);
+    if (access) await this.accessRepository.updateAccess(access.id);
 
     return access;
   }

@@ -1,11 +1,12 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { ACCESS_PROVIDER } from 'src/domain/enums';
 
 export class CreateAccessDto {
+  @IsString()
   @IsNotEmpty()
-  @IsEmail()
-  email: string;
+  code: string;
 
+  @IsString()
   @IsNotEmpty()
-  @IsNotEmpty()
-  password: string;
+  provider: ACCESS_PROVIDER;
 }

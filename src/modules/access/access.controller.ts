@@ -7,10 +7,7 @@ export class AccessController {
   constructor(private readonly accessService: AccessService) {}
 
   @Post()
-  create(@Body() createAccessDto: CreateAccessDto, @Req() request: Request) {
-    return this.accessService.create(
-      createAccessDto,
-      request.headers['user-agent'],
-    );
+  create(@Body() createAccessDto: CreateAccessDto) {
+    return this.accessService.makeSocialLogin(createAccessDto);
   }
 }

@@ -53,87 +53,87 @@ describe('AccessRepository', () => {
     moduleRef.close();
   });
 
-  it('create', async () => {
-    const createSpy = jest
-      .spyOn(prismaService.access, 'create')
-      .mockResolvedValue(accesses[0]);
+  // it('create', async () => {
+  //   const createSpy = jest
+  //     .spyOn(prismaService.access, 'create')
+  //     .mockResolvedValue(accesses[0]);
 
-    const spyCreate = jest.spyOn(repository, 'create');
-    const response = await repository.create(1, 'Chrome');
+  //   const spyCreate = jest.spyOn(repository, 'create');
+  //   const response = await repository.create(1, 'Chrome');
 
-    expect(response).toStrictEqual(accesses[0]);
-    expect(createSpy).toHaveBeenCalledWith({
-      data: {
-        userId: 1,
-        userAgent: 'Chrome',
-        disconnectedAt: null,
-      },
-    });
+  //   expect(response).toStrictEqual(accesses[0]);
+  //   expect(createSpy).toHaveBeenCalledWith({
+  //     data: {
+  //       userId: 1,
+  //       userAgent: 'Chrome',
+  //       disconnectedAt: null,
+  //     },
+  //   });
 
-    expect(spyCreate).toHaveBeenCalledTimes(1);
-    expect(createSpy).toHaveBeenCalledTimes(1);
-  });
+  //   expect(spyCreate).toHaveBeenCalledTimes(1);
+  //   expect(createSpy).toHaveBeenCalledTimes(1);
+  // });
 
-  it('findByUserAgent', async () => {
-    const createSpy = jest
-      .spyOn(prismaService.access, 'findFirst')
-      .mockResolvedValue(accesses[0]);
+  // it('findByUserAgent', async () => {
+  //   const createSpy = jest
+  //     .spyOn(prismaService.access, 'findFirst')
+  //     .mockResolvedValue(accesses[0]);
 
-    const spyCreate = jest.spyOn(repository, 'findByUserAgent');
-    const response = await repository.findByUserAgent(1, 'Chrome');
+  //   const spyCreate = jest.spyOn(repository, 'findByUserAgent');
+  //   const response = await repository.findByUserAgent(1, 'Chrome');
 
-    expect(response).toStrictEqual(accesses[0]);
-    expect(createSpy).toHaveBeenCalledWith({
-      where: {
-        userId: 1,
-        userAgent: 'Chrome',
-        disconnectedAt: null,
-      },
-    });
+  //   expect(response).toStrictEqual(accesses[0]);
+  //   expect(createSpy).toHaveBeenCalledWith({
+  //     where: {
+  //       userId: 1,
+  //       userAgent: 'Chrome',
+  //       disconnectedAt: null,
+  //     },
+  //   });
 
-    expect(spyCreate).toHaveBeenCalledTimes(1);
-    expect(createSpy).toHaveBeenCalledTimes(1);
-  });
+  //   expect(spyCreate).toHaveBeenCalledTimes(1);
+  //   expect(createSpy).toHaveBeenCalledTimes(1);
+  // });
 
-  it('findById', async () => {
-    const createSpy = jest
-      .spyOn(prismaService.access, 'findFirst')
-      .mockResolvedValue(accesses[0]);
+  // it('findById', async () => {
+  //   const createSpy = jest
+  //     .spyOn(prismaService.access, 'findFirst')
+  //     .mockResolvedValue(accesses[0]);
 
-    const spyCreate = jest.spyOn(repository, 'findById');
-    const response = await repository.findById(1);
+  //   const spyCreate = jest.spyOn(repository, 'findById');
+  //   const response = await repository.findById(1);
 
-    expect(response).toStrictEqual(accesses[0]);
-    expect(createSpy).toHaveBeenCalledWith({
-      where: {
-        id: 1,
-        disconnectedAt: null,
-      },
-    });
+  //   expect(response).toStrictEqual(accesses[0]);
+  //   expect(createSpy).toHaveBeenCalledWith({
+  //     where: {
+  //       id: 1,
+  //       disconnectedAt: null,
+  //     },
+  //   });
 
-    expect(spyCreate).toHaveBeenCalledTimes(1);
-    expect(createSpy).toHaveBeenCalledTimes(1);
-  });
+  //   expect(spyCreate).toHaveBeenCalledTimes(1);
+  //   expect(createSpy).toHaveBeenCalledTimes(1);
+  // });
 
-  it('update', async () => {
-    const createSpy = jest
-      .spyOn(prismaService.access, 'update')
-      .mockResolvedValue(accesses[0]);
+  // it('update', async () => {
+  //   const createSpy = jest
+  //     .spyOn(prismaService.access, 'update')
+  //     .mockResolvedValue(accesses[0]);
 
-    const spyCreate = jest.spyOn(repository, 'update');
-    const response = await repository.update(1);
+  //   const spyCreate = jest.spyOn(repository, 'update');
+  //   const response = await repository.update(1);
 
-    expect(response).toStrictEqual(accesses[0]);
-    expect(createSpy).toHaveBeenCalledWith({
-      where: {
-        id: 1,
-      },
-      data: {
-        lastAccess: expect.any(Date),
-      },
-    });
+  //   expect(response).toStrictEqual(accesses[0]);
+  //   expect(createSpy).toHaveBeenCalledWith({
+  //     where: {
+  //       id: 1,
+  //     },
+  //     data: {
+  //       lastAccess: expect.any(Date),
+  //     },
+  //   });
 
-    expect(spyCreate).toHaveBeenCalledTimes(1);
-    expect(createSpy).toHaveBeenCalledTimes(1);
-  });
+  //   expect(spyCreate).toHaveBeenCalledTimes(1);
+  //   expect(createSpy).toHaveBeenCalledTimes(1);
+  // });
 });

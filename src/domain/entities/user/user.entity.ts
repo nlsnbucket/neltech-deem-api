@@ -4,8 +4,8 @@ export class UserEntity implements User {
   id: number;
   name: string;
   username: string;
-  email: string;
-  password: string;
+  avatarUrl: string | null;
+  email: string | null;
   phone: string | null;
   createdAt: Date;
   updatedAt: Date;

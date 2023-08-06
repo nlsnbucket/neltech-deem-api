@@ -2,8 +2,8 @@ import { Access } from '@prisma/client';
 
 export class AccessEntity implements Access {
   id: number;
-  userAgent: string;
+  socialLogin: string;
+  token: string;
   userId: number;
   lastAccess: Date;
-  disconnectedAt: Date;
 }

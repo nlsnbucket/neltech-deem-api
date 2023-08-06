@@ -110,15 +110,6 @@ export class UserRepository {
           : {
               deletedAt: null,
             },
-      select: {
-        id: true,
-        name: true,
-        username: true,
-        email: true,
-        phone: true,
-        createdAt: true,
-        updatedAt: true,
-      },
       skip: (page - 1) * per_page,
       take: per_page,
     });

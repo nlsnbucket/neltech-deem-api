@@ -1,47 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../db/prisma.service';
 import { AccessEntity } from 'src/domain/entities';
+import { ACCESS_PROVIDER } from 'src/domain/enums';
 
 @Injectable()
 export class AccessRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(userId: number, userAgent: string): Promise<AccessEntity> {
+  create(token: string, provider: ACCESS_PROVIDER): Promise<AccessEntity> {
     return this.prismaService.access.create({
       data: {
-        userId,
-        userAgent,
-        disconnectedAt: null,
+        token,
+        socialLogin: provider,
       },
     });
   }
 
-  findByUserAgent(userId: number, userAgent: string): Promise<AccessEntity> {
+  findById(id: number): Promise<AccessEntity> {
+    return this.prismaService.access.findUnique({ where: { id } });
+  }
+
+  findByToken(token: string): Promise<AccessEntity> {
     return this.prismaService.access.findFirst({
-      where: {
-        userId,
-        userAgent,
-        disconnectedAt: null,
-      },
+      where: { token },
     });
   }
 
-  update(accessId: number): Promise<AccessEntity> {
+  updateAccess(id: number): Promise<AccessEntity> {
     return this.prismaService.access.update({
-      where: {
-        id: accessId,
-      },
+      where: { id },
       data: {
         lastAccess: new Date(),
-      },
-    });
-  }
-
-  findById(accessId: number): Promise<AccessEntity> {
-    return this.prismaService.access.findFirst({
-      where: {
-        id: accessId,
-        disconnectedAt: null,
       },
     });
   }
