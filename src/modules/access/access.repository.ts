@@ -26,7 +26,7 @@ export class AccessRepository {
     });
   }
 
-  update(accessId: number): Promise<AccessEntity> {
+  updateLastAccess(accessId: number): Promise<AccessEntity> {
     return this.prismaService.access.update({
       where: {
         id: accessId,

@@ -13,7 +13,7 @@ export class AccessService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async create(createAccessDto: CreateAccessDto, userAgent: string) {
+  async authenticate(createAccessDto: CreateAccessDto, userAgent: string) {
     const user = await this.userService.findByEmail(createAccessDto.email);
 
     const passwordIsCorrect = await bcrypt.compare(
@@ -31,7 +31,7 @@ export class AccessService {
 
     const access = !accessExist
       ? await this.accessRepository.create(user.id, userAgent)
-      : await this.accessRepository.update(accessExist.id);
+      : await this.accessRepository.updateLastAccess(accessExist.id);
 
     return this.jwtService.sign({
       sub: access.id,

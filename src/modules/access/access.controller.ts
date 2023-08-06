@@ -8,7 +8,7 @@ export class AccessController {
 
   @Post()
   create(@Body() createAccessDto: CreateAccessDto, @Req() request: Request) {
-    return this.accessService.create(
+    return this.accessService.authenticate(
       createAccessDto,
       request.headers['user-agent'],
     );

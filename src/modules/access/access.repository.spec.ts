@@ -120,8 +120,8 @@ describe('AccessRepository', () => {
       .spyOn(prismaService.access, 'update')
       .mockResolvedValue(accesses[0]);
 
-    const spyCreate = jest.spyOn(repository, 'update');
-    const response = await repository.update(1);
+    const spyCreate = jest.spyOn(repository, 'updateLastAccess');
+    const response = await repository.updateLastAccess(1);
 
     expect(response).toStrictEqual(accesses[0]);
     expect(createSpy).toHaveBeenCalledWith({
