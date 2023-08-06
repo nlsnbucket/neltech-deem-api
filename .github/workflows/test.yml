@@ -4,9 +4,9 @@ name: Tests
 
 on:
   push:
-    branches: ["master"]
+    branches: ['master']
   pull_request:
-    branches: ["master"]
+    branches: ['master']
 
 jobs:
   test:
@@ -14,5 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: bash scripts/test.sh
+        env:
+          DATABASE_URL: postgresql://test-user:test-pass@localhost:5432/test-db
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+
