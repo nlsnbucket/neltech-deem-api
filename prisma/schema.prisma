@@ -37,6 +37,19 @@ model Order {
   updatedAt     DateTime        @default(now()) @map("updated_at") @db.Timestamp
   deletedAt     DateTime?       @map("deleted_at") @db.Timestamp
   CustomerOrder CustomerOrder[]
+  OrderNotes OrderNotes[]
+}
+
+model OrderNotes {
+  id            Int             @id @default(autoincrement())
+  order         Order           @relation(fields: [orderId], references: [id])
+  orderId       Int             @map("order_id")
+  name          String
+  description   String
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamp
+  updatedAt     DateTime        @default(now()) @map("updated_at") @db.Timestamp
+  deletedAt     DateTime?       @map("deleted_at") @db.Timestamp
+  
 }
 
 model User {
