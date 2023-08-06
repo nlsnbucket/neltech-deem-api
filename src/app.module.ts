@@ -6,6 +6,7 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { CustomerOrderModule } from './modules/customer-order/customer-order.module';
 import { UserModule } from './modules/user/user.module';
 import { AccessModule } from './modules/access/access.module';
+import { OrderNotesModule } from './modules/order-notes/order-notes.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AccessModule } from './modules/access/access.module';
     CustomerOrderModule,
     UserModule,
     AccessModule,
+    OrderNotesModule,
   ],
   controllers: [AppController],
 })

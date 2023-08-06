@@ -1,21 +1,29 @@
-# Preparing Environment
-```bash
-# Install dependencies with yarn
-yarn
+# Preparing environment
 
-# Generate prisma client
+```bash
+# Install dependencies
+yarn
+# Generate prisma client lib
 npx prisma generate
+```
+
+# Testing
+
+```bash
+# Run jest
+npx jest
 ```
 
 # Building
 
 ```bash
-# Build nest project
+# Build with nest
 npx nest build
 ```
 
-# Testing
+# Runnning the application
+
 ```bash
-# Execute unit tests
-npx jest
+# Run the application with node
+node dist/main
 ```
