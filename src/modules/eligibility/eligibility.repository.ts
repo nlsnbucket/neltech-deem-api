@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../db/prisma.service';
-import { CreateEligibilityDto } from 'src/domain/dtos/eligibility';
+import {
+  CreateEligibilityDto,
+  UpdateEligibilityDto,
+} from 'src/domain/dtos/eligibility';
 import { EligibilityEntity } from 'src/domain/entities/eligibility';
 
 @Injectable()
@@ -22,6 +25,31 @@ export class EligibilityRepository {
     });
   }
 
+  async findById(eligibilityId: number): Promise<EligibilityEntity> {
+    return this.prismaService.eligibility.findFirst({
+      where: {
+        id: eligibilityId,
+        deletedAt: null,
+      },
+      include: {
+        user: true,
+        order: true,
+      },
+    });
+  }
+
+  async findByOrder(orderId: number): Promise<EligibilityEntity | null> {
+    return this.prismaService.eligibility.findFirst({
+      where: {
+        orderId,
+      },
+      include: {
+        user: true,
+        order: true,
+      },
+    });
+  }
+
   async findByUserIdAndOrderId(
     userId: number,
     orderId: number,
@@ -34,6 +62,36 @@ export class EligibilityRepository {
       include: {
         user: true,
         order: true,
+      },
+    });
+  }
+
+  async update(
+    orderId: number,
+    updateEligibilityDto: UpdateEligibilityDto,
+  ): Promise<EligibilityEntity> {
+    return this.prismaService.eligibility.update({
+      where: { id: orderId },
+      include: {
+        user: true,
+        order: true,
+      },
+      data: { ...updateEligibilityDto, updatedAt: new Date() },
+    });
+  }
+
+  async softDelete(eligibilityId: number): Promise<EligibilityEntity> {
+    return this.prismaService.eligibility.update({
+      where: {
+        id: eligibilityId,
+      },
+      include: {
+        user: true,
+        order: true,
+      },
+      data: {
+        updatedAt: new Date(),
+        deletedAt: new Date(),
       },
     });
   }
